@@ -16,8 +16,8 @@ module.exports = {
 
   chainWebpack: (config) => {
     config.externals({
-      'vue': 'Vue',
-      'element-ui': 'ElementUI',
+      // 'vue': 'Vue',
+      // 'element-ui': 'ElementUI',
     })
     config.resolve.alias
       .set('@', resolve('packages'))

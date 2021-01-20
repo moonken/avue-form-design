@@ -15,7 +15,12 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "dependencies": {
+    "@smallwei/avue": "^2.7.6",
+    "axios": "^0.21.1",
+    "element-ui": "^2.15.0",
     "monaco-editor": "^0.21.2",
+    "sortable": "^2.0.0",
+    "vue": "^2.6.12",
     "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
