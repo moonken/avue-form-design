@@ -1,7 +1,5 @@
 <template>
-
   <div id="app">
-    <test></test>
     <avue-form-design style="height: 100vh;"
                       :options="options"
                       @submit="handleSubmit"
@@ -11,16 +9,14 @@
 </template>
 
 <script>
-import Test from "@components/test";
 export default {
   name: 'app',
-  components: {Test},
   data() {
     return {
       customFields: [
         {
           title: '分割线',
-          component: 'test',//ele分割线
+          component: 'el-divider',//ele分割线
           span: 24,
           icon: 'el-icon-eleme',
           tips: '看我：自定义属性怎么用？',
@@ -28,6 +24,16 @@ export default {
           params: {
             html: '<h3 style="color:red">分割线标题</h3>',
             contentPosition: "left",
+          }
+        },
+        {
+          title: '测试自定义',
+          component: 'test',//ele分割线
+          span: 24,
+          icon: 'el-icon-eleme',
+          tips: '看我：自定义属性怎么用？',
+          labelWidth: '0px',
+          params: {
           }
         },
         {

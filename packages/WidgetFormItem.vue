@@ -6,14 +6,14 @@
       {{item.value}}
     </span>
     <component v-else
-               :is="getComponent(item.type, item.component)">
-<!--               v-bind="Object.assign(deepClone(item), params, { size:item.size || 'small' })"-->
-<!--               :multiple="false"-->
-<!--               :placeholder="item.placeholder || getPlaceholder(item)"-->
-<!--               :dic="item.dicData"-->
-<!--    >-->
-<!--      <span v-if="params.html"-->
-<!--            v-html="params.html"></span>-->
+               :is="getComponent(item.type, item.component)"
+               v-bind="Object.assign(deepClone(item), params, { size:item.size || 'small' })"
+               :multiple="false"
+               :placeholder="item.placeholder || getPlaceholder(item)"
+               :dic="item.dicData"
+    >
+      <span v-if="params.html"
+            v-html="params.html"></span>
     </component>
   </div>
 </template>

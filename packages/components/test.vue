@@ -1,7 +1,7 @@
 <template>
 
-<div style="width: 50px; height: 50px; background-color: #409eff">
-  test
+<div>
+  测试自定义
 </div>
 </template>
 
