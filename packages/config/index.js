@@ -16,6 +16,7 @@ import Map from './map.vue'
 import Group from './group.vue'
 import Array from './array.vue'
 import Title from './title.vue'
+import test from "@components/test";
 
 const components = [
   Custom,
@@ -35,7 +36,7 @@ const components = [
   Map,
   Group,
   Array,
-  Title
+  Title,test
 ]
 
 const Config = {
