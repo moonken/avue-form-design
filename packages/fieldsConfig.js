@@ -84,14 +84,16 @@ export default [
             icon: 'icon-img',
             span: 24,
             display: true,
-        }, {
-            type: 'map',
-            component: 'avue-input-map',
-            label: '地图选择器',
-            icon: 'icon-map',
-            span: 24,
-            display: true
-        }]
+        },
+        //     {
+        //     type: 'map',
+        //     component: 'avue-input-map',
+        //     label: '地图选择器',
+        //     icon: 'icon-map',
+        //     span: 24,
+        //     display: true
+        // }
+        ]
     },
     {
         title: '选择字段',
@@ -214,7 +216,7 @@ export default [
                 type: 'reference',
                 component: 'reference',
                 label: '引用',
-                icon: 'icon-url',
+                icon: 'icon-map',
                 span: 24,
                 display: true,
             }]
