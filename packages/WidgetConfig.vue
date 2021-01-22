@@ -156,9 +156,11 @@ export default {
     getComponent() {
       const prefix = 'config-'
       const { type, component } = this.data
-      if ((!type || component) && type != 'ueditor') return prefix + 'custom'
-      let result = 'input'
+      if ((!type || component) && type != 'ueditor' && type != 'reference') {
+        return prefix + 'custom'
+      }
 
+      let result = 'input'
       if ([undefined, 'input', 'password', 'url'].includes(type)) result = 'input'
       else if (dateArr.includes(type)) result = 'date'
       else if (['array', 'img'].includes(type)) result = 'array'

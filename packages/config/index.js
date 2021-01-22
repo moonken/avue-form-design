@@ -16,38 +16,41 @@ import Map from './map.vue'
 import Group from './group.vue'
 import Array from './array.vue'
 import Title from './title.vue'
-import test from "@components/test";
+import ConfigReference from './reference.vue'
+import Reference from "@components/reference";
 
 const components = [
-  Custom,
-  Input,
-  Textarea,
-  Number,
-  Dynamic,
-  Switch,
-  Rate,
-  Slider,
-  Color,
-  Select,
-  Tree,
-  Date,
-  UEditor,
-  Upload,
-  Map,
-  Group,
-  Array,
-  Title,test
+    Custom,
+    Input,
+    Textarea,
+    Number,
+    Dynamic,
+    Switch,
+    Rate,
+    Slider,
+    Color,
+    Select,
+    Tree,
+    Date,
+    UEditor,
+    Upload,
+    Map,
+    Group,
+    Array,
+    Title,
+    Reference,
+    ConfigReference
 ]
 
 const Config = {
-  install (Vue) {
-    if (this.installed) return
-    this.installed = true
+    install(Vue) {
+        if (this.installed) return
+        this.installed = true
 
-    components.map(component => {
-      Vue.component(component.name, component);
-    })
-  }
+        components.map(component => {
+            Vue.component(component.name, component);
+        })
+    }
 }
 
 export default Config
