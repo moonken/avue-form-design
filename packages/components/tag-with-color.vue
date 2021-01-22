@@ -1,42 +1,49 @@
 <template>
-  <div style="display: inline-block;">
+  <div class="tag-editor">
     <el-tag
         :key="label"
-        :type="type"
-        :style="{backgroundColor: color, 'color': reversalColor}">
+        :style="{backgroundColor: color}">
       {{ label }}
     </el-tag>
-    <el-color-picker  show-alpha :predefine="predefine" v-model="color"></el-color-picker>
+    <el-color-picker v-on:active-change="colorChanged($event)" show-alpha :predefine="predefine" v-model="color"></el-color-picker>
   </div>
 </template>
 
 <script>
 
-function componentToHex(c) {
-  var hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
-}
-
-function rgbToHex(r, g, b) {
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
 
 function invert(rgb) {
   if (!rgb) {
     return null;
   }
 
-  rgb = [].slice.call(arguments).join(",").replace(/rgb\(|\)|rgba\(|\)|\s/gi, '').split(',');
-  for (var i = 0; i < rgb.length; i++) rgb[i] = (i === 3 ? 1 : 255) - rgb[i];
-  return rgbToHex(rgb[0], rgb[1], rgb[2]);
+  const rgbValue = rgb.replace("rgb(", "").replace(")", "");
+
+  const rgbValueArray = rgbValue.split(",");
+
+  const grayLevel = rgbValueArray[0] * 0.299 + rgbValueArray[1] * 0.587 + rgbValueArray[2] * 0.114;
+
+  if (grayLevel >= 192) {
+    return "black"
+  } else {
+    return "white"
+  }
+
+
 }
 
 
 export default {
   name: "tag-with-color",
-  props: {label: String, type: String, color: String},
+  props: {label: String, type: String},
+  methods: {
+    colorChanged($event) {
+      this.color = $event;
+    },
+  },
   data() {
     return {
+      color: 'rgb(102, 204, 255)',
       predefine: [
         "#00C821",
         "#9CD326",
@@ -69,5 +76,32 @@ export default {
 </script>
 
 <style scoped>
+  .tag-editor {
+    display: inline-flex;
+    margin: 0 10px;
+  }
+
+  /deep/ .el-color-picker__trigger {
+    border-left: 0;
+    padding: 0;
+    margin-left: -6px;
+    border-color: rgba(0,0,0,0);
+  }
+
+  /deep/ .el-color-picker__color {
+    border: none;
+  }
+
+  /deep/ .el-color-picker__color-inner {
+    height: 32px;
+    margin-top: -1px;
+    border-radius: 4px;
+  }
+
+  /deep/ .el-tag {
+    color: white;
+    border-right: 0;
+    border-color: rgba(0,0,0,0);
+  }
 
 </style>
