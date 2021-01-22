@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "Reference",
+  name: "reference",
   props: {label: String},
   beforeMount() {
     console.log(this);

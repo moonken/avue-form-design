@@ -203,6 +203,14 @@ export default [
             }
         },
             {
+                type: 'tag-editor',
+                component: 'tag-editor',
+                label: '标签选择器',
+                icon: 'icon-input',
+                span: 24,
+                display: true,
+            },
+            {
                 type: 'reference',
                 component: 'reference',
                 label: '引用',

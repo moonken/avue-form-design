@@ -17,7 +17,9 @@ import Group from './group.vue'
 import Array from './array.vue'
 import Title from './title.vue'
 import ConfigReference from './reference.vue'
+import ConfigTagEditor from './tag-editor.vue'
 import Reference from "@components/reference";
+import TagEditor from "@components/tag-editor";
 
 const components = [
     Custom,
@@ -39,7 +41,9 @@ const components = [
     Array,
     Title,
     Reference,
-    ConfigReference
+    ConfigReference,
+    ConfigTagEditor,
+    TagEditor
 ]
 
 const Config = {

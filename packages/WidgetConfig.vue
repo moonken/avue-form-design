@@ -156,7 +156,7 @@ export default {
     getComponent() {
       const prefix = 'config-'
       const { type, component } = this.data
-      if ((!type || component) && type != 'ueditor' && type != 'reference') {
+      if ((!type || component) && type != 'ueditor' && type != 'reference' && type != 'tag-editor') {
         return prefix + 'custom'
       }
 
