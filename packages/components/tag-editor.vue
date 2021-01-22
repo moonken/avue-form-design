@@ -1,12 +1,13 @@
 <template>
   <div>
-    <el-tag
+    <tag-with-color
         v-for="item in dynamicTags"
         :key="item.label"
+        :label="item.label"
         :type="item.type"
-        effect="dark">
-      {{ item.label }}
-    </el-tag>
+        :color="item.color">
+    </tag-with-color>
+    <el-color-picker v-model="color1"></el-color-picker>
     <el-input
         class="input-new-tag"
         v-if="inputVisible"
@@ -22,8 +23,10 @@
 </template>
 
 <script>
+import TagWithColor from "@components/tag-with-color";
 export default {
   name: 'tag-editor',
+  components: {TagWithColor},
   data() {
     return {
       dynamicTags: [
@@ -34,7 +37,8 @@ export default {
       { type: 'warning', label: '标签五' }
     ],
       inputVisible: false,
-      inputValue: ''
+      inputValue: '',
+      color1: '#409EFF'
     };
   },
   methods: {
