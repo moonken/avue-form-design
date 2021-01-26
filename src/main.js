@@ -9,7 +9,7 @@ import App from './App'
 import AvueFormDesign from '../packages/';
 import AvueUeditor from 'avue-plugin-ueditor'
 import ContentTypeList from "@/pages/content-type-list";
-import FormDesigner from "@/pages/form-designer";
+import ContentList from "@/pages/content-list";
 import store from '@/store/index'
 
 Vue.use(VueRouter)
@@ -25,13 +25,14 @@ const router = new VueRouter({
   mode: 'history',
   routes:[
     {
-      path: '/', component: FormDesigner
+      path: '/',
+      redirect: '/content-types'
     },
     {
       path: '/content-types', component: ContentTypeList ,
     },
     {
-      path: '/content-types/:id', component: FormDesigner ,
+      path: '/content-types/:id', component: ContentList ,
     }
   ]
 });

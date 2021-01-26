@@ -65,8 +65,12 @@ const state = () => ({
             detail: false,
             readonly: true,
             disabled: false
-        }}, {id: 2, name: '视频'}],
+        }}, {id: 2, name: '视频', structure:{}}],
 })
+
+function getCurrentType(state, id) {
+    return state.contentTypes.find(type => type.id == id);
+}
 
 // getters
 const getters = {
@@ -75,14 +79,23 @@ const getters = {
     },
 
     getType: (state) => (id) => {
-        return state.contentTypes.find(type => type.id == id);
+        return getCurrentType(state, id);
+    },
+
+    isTypeStructureEmpty: (state) => (id) => {
+        let structure = getCurrentType(state, id).structure;
+        return !(structure && structure.column);
     }
 }
 
 // actions
 const actions = {
     create({ commit }, contentType) {
-        commit('create', contentType)
+        commit('create', {...contentType, id: parseInt(Math.random() * 1000)})
+    },
+
+    update({ commit }, contentType) {
+        commit('update', contentType)
     }
 }
 
@@ -90,6 +103,12 @@ const actions = {
 const mutations = {
     create (state, contentType) {
         state.contentTypes.push(contentType);
+    },
+    update (state, contentType) {
+        let type = state.contentTypes.find(type => type.id == contentType.id);
+        type.name = contentType.name;
+        type.structure = contentType.structure;
+        state.contentTypes = [...state.contentTypes];
     },
 }
 

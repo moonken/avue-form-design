@@ -106,7 +106,7 @@
                        type="text"
                        size="medium"
                        icon="el-icon-check"
-                       @click="handleGenerateJson">保存</el-button>
+                       @click="handleGenerate">保存</el-button>
             <el-button v-if="toolbar.includes('preview')"
                        type="text"
                        size="medium"
@@ -493,12 +493,16 @@ export default {
     },
     // 生成JSON - 弹窗 - 确定
     handleGenerate() {
+      debugger
       this.transformToAvueOptions(this.widgetForm).then(data => {
-        if (this.configOption.generateType && this.configOption.generateType == 'string') this.$emit('submit', beautifier(data, {
-          minify: true,
-          ...this.configOption
-        }))
-        else this.$emit('submit', data)
+        if (this.configOption.generateType && this.configOption.generateType == 'string') {
+          this.$emit('submit', beautifier(data, {
+            minify: true,
+            ...this.configOption
+          }))
+        } else {
+          this.$emit('submit', data)
+        }
       })
     },
     // 生成JSON - 弹窗 - 拷贝

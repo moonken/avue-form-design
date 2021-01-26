@@ -1,6 +1,6 @@
 <template>
   <div>
-    <avue-form-design v-if="!currentType.structure" :options="options"
+    <avue-form-design v-if="isTypeStructureEmpty($route.params.id)" :options="options"
                       @submit="handleSubmit"
                       storage
                       :custom-fields="customFields"></avue-form-design>
@@ -82,10 +82,10 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
-  name: 'FormDesigner',
+  name: 'ContentList',
   data() {
     return {
       customFields: [
@@ -107,7 +107,8 @@ export default {
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
     ...mapGetters({
-      getType: 'contentTypes/getType'
+      getType: 'contentTypes/getType',
+      isTypeStructureEmpty: 'contentTypes/isTypeStructureEmpty'
     }),
 
     currentType() {
@@ -115,9 +116,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+          updateContentType: 'contentTypes/update'
+    }),
     handleSubmit(val) {
-      this.$message.success("查看控制台")
-      console.log(val);
+      debugger
+      this.currentType.structure = val;
+      this.updateContentType(this.currentType);
     },
   }
 }

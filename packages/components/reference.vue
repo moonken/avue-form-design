@@ -8,7 +8,7 @@
 <script>
 export default {
   name: "reference",
-  props: {label: String},
+  props: {label: String, value: {type: String, default:''}},
   data() {
     return {
       column:{
@@ -31,6 +31,16 @@ export default {
         value: 'id'
       },
       form:'0'
+    }
+  },
+  watch: {
+    form: function (newVal) {
+      console.log(1)
+      this.$emit('input', newVal);
+    },
+    value: function(newVal) { // watch it
+      console.log(2)
+      this.form = newVal;
     }
   },
   methods:{
