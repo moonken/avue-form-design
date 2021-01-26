@@ -1,0 +1,68 @@
+<template>
+  <avue-crud :data="allTypes" v-model="obj" :option="option" @row-click="handleRowClick" @row-save="rowSave" @row-update="rowUpdate" @error="error"></avue-crud>
+
+</template>
+
+<script>
+import {mapGetters} from "vuex";
+
+export default {
+  name: "ContentTypeList",
+  data() {
+    return {
+      obj:{},
+      option:{
+        page:false,
+        align:'center',
+        menuAlign:'center',
+        column:[
+          {
+            label:'ID',
+            prop:'id',
+            addDisplay: false,
+            editDisplay: false,
+          },
+          {
+            label:'名称',
+            prop:'name',
+            rules: [{
+              required: true,
+              message: "请输入名称",
+              trigger: "blur"
+            }]
+          }
+        ]
+      },
+    };
+  },
+  computed: {
+    // 使用对象展开运算符将 getter 混入 computed 对象中
+    ...mapGetters({
+      allTypes: 'contentTypes/getAll'
+    })
+  },
+  methods: {
+    error(err){
+      this.$message.success('请查看控制台');
+      console.log(err)
+    },
+    rowSave(form,done){
+      this.$store.dispatch('contentTypes/create', form)
+      done();
+    },
+    rowUpdate(form,index,done){
+      this.$message.success('编辑数据'+ JSON.stringify(form)+'数据序号'+index);
+      done();
+    },
+    handleRowClick(row) {
+      this.$router.push({
+        path: `/content-types/${row.id}`,
+      })
+    },
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

@@ -68,7 +68,14 @@
       <!-- 中间主布局 -->
       <el-container class="widget-container"
                     direction="vertical">
-        <el-header class="widget-container-header">
+
+        <el-main :style="{background: widgetForm.column.length == 0 ? `url(${widgetEmpty}) no-repeat 50%`: ''}">
+          <widget-form ref="widgetForm"
+                       :data="widgetForm"
+                       :select.sync="widgetFormSelect"
+                       @change="handleHistoryChange(widgetForm)"></widget-form>
+        </el-main>
+        <el-footer class="widget-container-footer">
           <div>
             <template v-if="undoRedo">
               <el-button type="text"
@@ -85,21 +92,21 @@
           </div>
           <div style="display: flex; align-items: center;">
             <slot name="toolbar-left"></slot>
-            <el-button v-if="toolbar.includes('avue-doc')"
-                       type="text"
-                       size="medium"
-                       icon="el-icon-document"
-                       @click="handleAvueDoc">Avue文档</el-button>
-            <el-button v-if="toolbar.includes('import')"
-                       type="text"
-                       size="medium"
-                       icon="el-icon-upload2"
-                       @click="importJsonVisible = true">导入JSON</el-button>
+<!--            <el-button v-if="toolbar.includes('avue-doc')"-->
+<!--                       type="text"-->
+<!--                       size="medium"-->
+<!--                       icon="el-icon-document"-->
+<!--                       @click="handleAvueDoc">Avue文档</el-button>-->
+<!--            <el-button v-if="toolbar.includes('import')"-->
+<!--                       type="text"-->
+<!--                       size="medium"-->
+<!--                       icon="el-icon-upload2"-->
+<!--                       @click="importJsonVisible = true">导入JSON</el-button>-->
             <el-button v-if="toolbar.includes('generate')"
                        type="text"
                        size="medium"
-                       icon="el-icon-download"
-                       @click="handleGenerateJson">生成JSON</el-button>
+                       icon="el-icon-check"
+                       @click="handleGenerateJson">保存</el-button>
             <el-button v-if="toolbar.includes('preview')"
                        type="text"
                        size="medium"
@@ -113,13 +120,7 @@
                        @click="handleClear">清空</el-button>
             <slot name="toolbar"></slot>
           </div>
-        </el-header>
-        <el-main :style="{background: widgetForm.column.length == 0 ? `url(${widgetEmpty}) no-repeat 50%`: ''}">
-          <widget-form ref="widgetForm"
-                       :data="widgetForm"
-                       :select.sync="widgetFormSelect"
-                       @change="handleHistoryChange(widgetForm)"></widget-form>
-        </el-main>
+        </el-footer>
       </el-container>
       <!-- 右侧配置 -->
       <el-aside class="widget-config-container"
