@@ -37,6 +37,12 @@ export default {
     }),
 
   },
+  beforeMount() {
+    let that = this;
+    setTimeout(() => {
+      that.options = that.getType(that.$route.params.id).structure;
+    }, 1000)
+  },
   methods: {
     ...mapActions({
       updateStructure: 'contentTypes/updateStructure'

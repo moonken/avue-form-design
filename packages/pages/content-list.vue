@@ -12,6 +12,21 @@ function loadData() {
   this.$store.dispatch('contents/load', this.$route.params.id);
   setTimeout(function () {
     let structure = {...that.getType(that.$route.params.id).structure}
+
+    structure.group && structure.group.forEach(g => {
+      g.column.forEach(c => {
+        if (c.type === 'upload') {
+          c.action = '/files/upload'
+          c.listType = 'picture-card'
+          c.propsHttp = {
+            res: 'data.data',
+            url: 'url',
+            name: 'name'
+          }
+        }
+      })
+    })
+
     structure.column && structure.column.forEach(c => {
       if (c.type === 'upload') {
         c.action = '/files/upload'
