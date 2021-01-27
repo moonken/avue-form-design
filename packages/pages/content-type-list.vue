@@ -1,5 +1,5 @@
 <template>
-  <avue-crud :data="allTypes" v-model="obj" :option="option" @row-click="handleRowClick" @row-save="rowSave" @row-update="rowUpdate" @error="error"></avue-crud>
+  <avue-crud :data="allTypes" v-model="obj" :option="option" @row-del="rowDel" @row-click="handleRowClick" @row-save="rowSave" @row-update="rowUpdate" @error="error"></avue-crud>
 
 </template>
 
@@ -53,6 +53,10 @@ export default {
     },
     rowUpdate(form,index,done){
       this.$store.dispatch('contentTypes/update', form)
+      done();
+    },
+    rowDel(form,index,done){
+      this.$store.dispatch('contentTypes/delete', form.id)
       done();
     },
     handleRowClick(row) {

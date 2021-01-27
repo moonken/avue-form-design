@@ -1,6 +1,6 @@
 <template>
   <div>
-    <avue-crud :data="contents.map(c => c.content)" @row-save="rowSave" @row-update="rowUpdate" @error="error" :option="structure" ></avue-crud>
+    <avue-crud :data="contents.map(c => c.content)" @row-del="rowDel" @row-save="rowSave" @row-update="rowUpdate" @error="error" :option="structure" ></avue-crud>
   </div>
 </template>
 
@@ -69,6 +69,10 @@ export default {
     },
     rowUpdate(form,index,done){
       this.$store.dispatch('contents/update', {content: form, typeId: this.$route.params.id})
+      done();
+    },
+    rowDel(form,index,done){
+      this.$store.dispatch('contents/delete', form)
       done();
     },
   }

@@ -41,6 +41,12 @@ const actions = {
         })
     },
 
+    delete({ commit }, id) {
+        httpClient.post(`/content-types/${id}/delete`).then(() => {
+            commit('deleted', id);
+        })
+    },
+
     updateStructure({ commit }, contentType) {
         if (!contentType.structure.column.find(c => c.prop === 'id')) {
             contentType.structure.column.push({
@@ -88,6 +94,9 @@ const mutations = {
         let currentType = findType(state, contentType.id);
         currentType.name = contentType.name;
         currentType.structure = contentType.structure;
+    },
+    deleted (state, id) {
+        state.contentTypes = state.contentTypes.filter(c => c.id !== id)
     },
 }
 

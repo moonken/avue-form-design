@@ -62,7 +62,6 @@ export default {
       console.log(page, value,data)
       let that = this;
 
-      debugger
       if (value) {
         setTimeout(() => {
           callback(that.getById(value))
