@@ -1,6 +1,6 @@
 <template>
   <div>
-    <avue-crud :data="contents.map(c => c.content)" @row-save="rowSave" @row-update="rowUpdate" @error="error" :option="structure" ></avue-crud>
+    <avue-crud :data="contents.map(c => c.content)" @row-delete="rowDelete" @row-save="rowSave" @row-update="rowUpdate" @error="error" :option="structure" ></avue-crud>
   </div>
 </template>
 
