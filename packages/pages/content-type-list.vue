@@ -21,6 +21,7 @@ export default {
             prop:'id',
             addDisplay: false,
             editDisplay: false,
+            showColumn:false,
           },
           {
             label:'名称',
@@ -51,7 +52,7 @@ export default {
       done();
     },
     rowUpdate(form,index,done){
-      this.$message.success('编辑数据'+ JSON.stringify(form)+'数据序号'+index);
+      this.$store.dispatch('contentTypes/update', form)
       done();
     },
     handleRowClick(row) {

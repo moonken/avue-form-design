@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-      <div class="nav-bar">
+      <div class="nav-bar" v-if="this.$route.name != 'login'">
         <el-menu
             :default-active="activeIndex2"
             class="el-menu-demo"
@@ -44,6 +44,9 @@ export default {
     ...mapGetters({
       allTypes: 'contentTypes/getAll'
     })
+  },
+  beforeMount() {
+    this.$store.dispatch('contentTypes/load');
   },
 }
 </script>

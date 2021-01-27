@@ -493,7 +493,6 @@ export default {
     },
     // 生成JSON - 弹窗 - 确定
     handleGenerate() {
-      debugger
       this.transformToAvueOptions(this.widgetForm).then(data => {
         if (this.configOption.generateType && this.configOption.generateType == 'string') {
           this.$emit('submit', beautifier(data, {
