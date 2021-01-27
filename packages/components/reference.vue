@@ -18,7 +18,7 @@ export default {
         label: 'id',
         value: 'id'
       },
-      form: null
+      form: this.value
     }
   },
   watch: {
@@ -63,6 +63,7 @@ export default {
       let that = this;
 
       if (value) {
+        debugger
         setTimeout(() => {
           callback(that.getById(value))
         }, 1000)
