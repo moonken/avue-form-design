@@ -23,7 +23,7 @@ const getters = {
 // actions
 const actions = {
     create({ commit }, contentType) {
-        debugger;
+
         httpClient.post('/content-types', contentType).then(res => {
             commit('created', res.data)
         })
@@ -81,7 +81,7 @@ const mutations = {
         state.contentTypes.push(contentType);
     },
     loaded (state, contentTypes) {
-        debugger
+
         state.contentTypes = contentTypes;
     },
     updated (state, contentType) {

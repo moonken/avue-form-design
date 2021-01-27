@@ -1,11 +1,32 @@
 <template>
   <div>
-    <avue-crud :data="contents.map(c => c.content)" @row-delete="rowDelete" @row-save="rowSave" @row-update="rowUpdate" @error="error" :option="structure" ></avue-crud>
+    <avue-crud :data="contents.map(c => c.content)" @row-save="rowSave" @row-update="rowUpdate" @error="error" :option="structure" ></avue-crud>
   </div>
 </template>
 
 <script>
 import {mapGetters, mapActions} from "vuex";
+
+function loadData() {
+  const that = this;
+  this.$store.dispatch('contents/load', this.$route.params.id);
+  setTimeout(function () {
+    let structure = {...that.getType(that.$route.params.id).structure}
+    structure.column && structure.column.forEach(c => {
+      if (c.type === 'upload') {
+        c.action = '/files/upload'
+        c.listType = 'picture-card'
+        c.propsHttp = {
+          res: 'data.data',
+          url: 'url',
+          name: 'name'
+        }
+      }
+    })
+
+    that.structure = structure;
+  }, 1000)
+}
 
 export default {
   name: 'ContentList',
@@ -21,24 +42,15 @@ export default {
     }),
   },
   beforeMount() {
-    const that = this;
-    this.$store.dispatch('contents/load', this.$route.params.id);
-    setTimeout( function () {
-      let structure = {...that.getType(that.$route.params.id).structure}
-      structure.column.forEach(c => {
-        if (c.type === 'upload') {
-          c.action = '/files/upload'
-          c.listType = 'picture-card'
-          c.propsHttp = {
-            res: 'data.data',
-            url: 'url',
-            name: 'name'
-          }
-        }
-      })
-
-      that.structure = structure;
-    }, 2000)
+    loadData.call(this);
+  },
+  watch: {
+    '$route.params.id': {
+      handler: function() {
+        loadData.call(this);
+      },
+      immediate: true
+    }
   },
   methods: {
     ...mapActions({

@@ -6,31 +6,19 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: "reference",
-  props: {label: String, value: {type: String, default:''}},
+  props: {label: String, value: {type: String, default:''}, contentType: Number},
   data() {
     return {
-      column:{
-        children:{
-          border: true,
-          column: [{
-            label: '姓名',
-            width: 120,
-            search:true,
-            prop: 'name'
-          }, {
-            label: '性别',
-            search:true,
-            prop: 'sex'
-          }],
-        },
-      },
+      column: {},
       props: {
-        label: 'name',
+        label: 'id',
         value: 'id'
       },
-      form:'0'
+      form: null
     }
   },
   watch: {
@@ -43,41 +31,50 @@ export default {
       this.form = newVal;
     }
   },
+  beforeMount() {
+    this.column = {
+      children:{
+        border: true,
+        column: this.currentType.structure.column,
+      },
+    }
+  },
+  computed: {
+    // 使用对象展开运算符将 getter 混入 computed 对象中
+    ...mapGetters({
+      getType: 'contentTypes/getType',
+      contents: 'contentReference/getAll',
+      getById: 'contentReference/getById'
+    }),
+    currentType () {
+      return this.getType(this.contentType)
+    },
+  },
   methods:{
     formatter(row){
-      if(!row.name) return ''
-      return row.name + '-' + row.sex
+      if (row.id) {
+        return this.currentType.name + '-' + row.id
+      }
     },
     onLoad({ page, value,data }, callback){
-      //首次加载去查询对应的值
+
+      this.$store.dispatch('contentReference/load', this.contentType);
+      console.log(page, value,data)
+      let that = this;
+
+      debugger
       if (value) {
-        this.$message.success('首次查询'+value)
-        callback({
-          id: '0',
-          name: '张三',
-          sex: '男'
-        })
-        return
+        setTimeout(() => {
+          callback(that.getById(value))
+        }, 1000)
+      } else {
+        setTimeout(() => {
+          callback({
+            total: that.contents.length,
+            data: that.contents.map(c => c.content)
+          })
+        }, 1000)
       }
-      if(data){
-        this.$message.success('搜索查询参数'+JSON.stringify(data))
-      }
-      if(page){
-        this.$message.success('分页参数'+JSON.stringify(page))
-      }
-      //分页查询信息
-      callback({
-        total: 2,
-        data: [{
-          id: '0',
-          name: '张三',
-          sex: '男'
-        }, {
-          id: '1',
-          name: '李四',
-          sex: '女'
-        }]
-      })
     }
   }
 }

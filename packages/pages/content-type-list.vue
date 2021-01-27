@@ -57,7 +57,7 @@ export default {
     },
     handleRowClick(row) {
       this.$router.push({
-        path: `/content-types/${row.id}`,
+        path: `/content-types/${row.id}/designer`,
       })
     },
   }

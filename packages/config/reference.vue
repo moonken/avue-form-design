@@ -3,57 +3,19 @@
     <el-form-item label="内容类型">
       <el-select v-model="data.contentType" placeholder="内容类型">
         <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            v-for="item in contentTypes"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
         </el-option>
       </el-select>
-    </el-form-item>
-    <el-form-item label="默认值">
-      <el-input v-model="data.value"
-                clearable
-                placeholder="默认值"></el-input>
-    </el-form-item>
-    <el-form-item label="前缀">
-      <el-input v-model="data.prepend"
-                clearable
-                placeholder="前缀"></el-input>
-    </el-form-item>
-    <el-form-item label="后缀">
-      <el-input v-model="data.append"
-                clearable
-                placeholder="后缀"></el-input>
-    </el-form-item>
-    <el-form-item label="最大长度">
-      <el-input-number v-model="data.maxlength"
-                       controls-position="right"
-                       placeholder="最大长度"></el-input-number>
-    </el-form-item>
-    <el-form-item label="显示计数"
-                  v-if="data.type != 'password'">
-      <el-switch v-model="data.showWordLimit"></el-switch>
-    </el-form-item>
-    <el-form-item label="显示密码"
-                  v-if="data.type == 'password'">
-      <el-switch v-model="data.showPassword"></el-switch>
-    </el-form-item>
-    <el-form-item label="是否只读">
-      <el-switch v-model="data.readonly"></el-switch>
-    </el-form-item>
-    <el-form-item label="是否可见">
-      <el-switch v-model="data.display"></el-switch>
-    </el-form-item>
-    <el-form-item label="是否必填">
-      <el-switch v-model="data.required"></el-switch>
-      <el-input v-if="data.required"
-                v-model.lazy="data.pattern"
-                placeholder="正则表达式"></el-input>
     </el-form-item>
   </div>
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: "config-reference",
   props: ['data'],
@@ -65,9 +27,14 @@ export default {
         pattern: null,
         length: null
       },
-      options: [{value: 'a', label: 'a'}, {value: 'b', label: 'b'}]
-
     }
+  },
+  computed: {
+    // 使用对象展开运算符将 getter 混入 computed 对象中
+    ...mapGetters({
+      contentTypes: 'contentTypes/getAll',
+    }),
+
   },
   methods: {
     generateRule() {
