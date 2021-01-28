@@ -6,6 +6,8 @@ function resolve (dir) {
 module.exports = {
   transpileDependencies: ['avue-plugin-ueditor'],
 
+  publicPath: process.env.VUE_APP_BASE_URL,
+
   productionSourceMap: false,
 
   configureWebpack: {

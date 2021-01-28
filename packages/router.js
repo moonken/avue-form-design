@@ -5,7 +5,8 @@ import ContentList from "@/pages/content-list";
 import ContentDesigner from "@/pages/content-designer";
 
 export const router = new VueRouter({
-    mode: 'history',
+    mode: 'hash',
+    base: process.env.BASE_URL,
     routes:[
         {
             path: '/',
@@ -15,7 +16,7 @@ export const router = new VueRouter({
             name: 'login', path: '/login', component: Login ,
         },
         {
-            path: '/content-types', component: ContentTypeList ,
+            name: 'contentTypes', path: '/content-types', component: ContentTypeList ,
         },
         {
             path: '/content-types/:id', component: ContentList ,

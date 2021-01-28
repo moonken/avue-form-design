@@ -9,7 +9,7 @@
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b">
-          <el-menu-item index="1"><a href="/content-types">内容类型</a></el-menu-item>
+          <el-menu-item @click="$router.push({path: `/content-types`})" index="1">内容类型</el-menu-item>
           <el-submenu index="2">
             <template slot="title">内容</template>
             <el-menu-item v-for="type in allTypes" :key="type.id" index="type.id" @click="handleSelect(type)">{{ type.name }}</el-menu-item>

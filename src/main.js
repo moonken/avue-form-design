@@ -12,6 +12,8 @@ import AvueFormDesign from '../packages/';
 import AvueUeditor from 'avue-plugin-ueditor'
 import store from '@/store/index'
 
+Vue.prototype.baseURL = process.env.VUE_APP_BASE_URL
+
 Vue.use(UUID);
 Vue.use(VueRouter)
 Vue.use(Avue)
