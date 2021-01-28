@@ -1,5 +1,5 @@
 <template>
-  <avue-crud :data="data" :option="option">
+  <avue-crud v-if="data.length > 0" :data="data" :option="option">
     <template slot="expand" slot-scope="{row}">
       <div class="expanded" v-for="subTable in subTables" :key="subTable.original.prop" >
         <div class="title">{{subTable.original.label}}</div>

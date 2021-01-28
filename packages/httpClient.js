@@ -3,7 +3,7 @@ import Vue from "vue";
 import { router } from '@/router'
 
 const httpClient = axios.create({
-    baseURL: 'http://localhost:8085/api/cms'
+    baseURL: 'https://cardsocket.guanxintec.com/api/cms'
 })
 
 Vue.prototype.$axios = httpClient

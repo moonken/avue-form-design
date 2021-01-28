@@ -110,11 +110,11 @@ const mutations = {
     },
     loaded(state, contentTypes) {
         contentTypes.map(c => c.structure).forEach(c => {
-            c.group && c.group.forEach(g => {
+            c && c.group && c.group.forEach(g => {
                 initColumn(g)
             })
 
-            c.column && initColumn(c)
+            c && c.column && initColumn(c)
         })
         state.contentTypes = contentTypes;
     },

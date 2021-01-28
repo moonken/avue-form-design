@@ -44,7 +44,6 @@ export default {
     });
   },
   computed: {
-    // 使用对象展开运算符将 getter 混入 computed 对象中
     ...mapGetters({
       getType: 'contentTypes/getType',
       contents: 'contentReference/getAll',

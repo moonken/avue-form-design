@@ -36,6 +36,9 @@ export default {
       },
     };
   },
+  beforeMount() {
+    this.loadTypes();
+  },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
     ...mapGetters({
@@ -46,7 +49,8 @@ export default {
     ...mapActions({
       create: 'contentTypes/create',
       update: 'contentTypes/update',
-      delete: 'contentTypes/delete'
+      delete: 'contentTypes/delete',
+      loadTypes: 'contentTypes/load',
     }),
     error(err){
       this.$message.success('请查看控制台');
@@ -54,11 +58,11 @@ export default {
     },
     rowSave(form,done,loading){
       loading();
-      this.create(form).then(done).catch(done)
+      this.create(form).then(done)
     },
     rowUpdate(form,index,done, loading){
       loading();
-      this.update(form).then(done).catch(done)
+      this.update(form).then(done)
     },
     rowDel(form,index,done){
       this.delete(form.id).then(done)

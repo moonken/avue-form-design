@@ -69,7 +69,6 @@ export default {
       this.loadContents(this.$route.params.id)
       this.loadTypes().then(function () {
         let structure = {...that.getType(that.$route.params.id).structure,
-          excelBtn:true,
           expandRowKeys:['id'],
           rowKey:'id',};
         that.subTables = structure.column.filter(c => c.type === 'dynamic').map(column => {
@@ -93,13 +92,12 @@ export default {
       console.log(err)
     },
     rowSave(form, done, loading) {
-      debugger
       loading()
-      this.create({content: form, typeId: this.$route.params.id}).then(done).catch(done)
+      this.create({content: form, typeId: this.$route.params.id}).then(done)
     },
     rowUpdate(form, index, done, loading) {
       loading()
-      this.update({content: form, typeId: this.$route.params.id}).then(done).catch(done)
+      this.update({content: form, typeId: this.$route.params.id}).then(done)
     },
     rowDel(form, index, done) {
       this.delete(form).then(done)
