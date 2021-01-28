@@ -62,8 +62,10 @@ export default {
       }
       if (row.name) {
         return this.currentType.name + '-' + row.name
-      } else {
+      } else if (row.id) {
         return this.currentType.name + '-' + row.id
+      } else {
+        return null;
       }
     },
     onLoad({page, value, data}, callback) {
