@@ -12,7 +12,7 @@ function findType(state, id) {
 // getters
 const getters = {
     getAll: (state) => {
-        return state.contentTypes;
+        return [...state.contentTypes];
     },
 
     getType: (state) => (id) => {
@@ -40,10 +40,8 @@ const actions = {
         })
     },
 
-    delete({ commit }, id) {
-        return httpClient.post(`/content-types/${id}/delete`).then(() => {
-            commit('deleted', id);
-        })
+    delete(op, id) {
+        return httpClient.post(`/content-types/${id}/delete`)
     },
 
     updateStructure({ commit }, contentType) {
@@ -86,16 +84,37 @@ const mutations = {
         state.contentTypes.push(contentType);
     },
     loaded (state, contentTypes) {
+        contentTypes.forEach(c => {c.group && c.group.forEach(g => {
+            g.column.forEach(c => {
+                if (c.type === 'upload') {
+                    c.action = '/files/upload'
+                    c.listType = 'picture-card'
+                    c.propsHttp = {
+                        res: 'data.data',
+                        url: 'url',
+                        name: 'name'
+                    }
+                }
+            })
+        })
 
+        c.column && c.column.forEach(c => {
+            if (c.type === 'upload') {
+                c.action = '/files/upload'
+                c.listType = 'picture-card'
+                c.propsHttp = {
+                    res: 'data.data',
+                    url: 'url',
+                    name: 'name'
+                }
+            }
+        })})
         state.contentTypes = contentTypes;
     },
     updated (state, contentType) {
         let currentType = findType(state, contentType.id);
         currentType.name = contentType.name;
         currentType.structure = contentType.structure;
-    },
-    deleted (state, id) {
-        state.contentTypes = state.contentTypes.filter(c => c.id !== id)
     },
 }
 

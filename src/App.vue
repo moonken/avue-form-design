@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "app",
@@ -33,6 +33,10 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      loadTypes: 'contentTypes/load'
+    }),
+
     handleSelect(type) {
       this.$router.push({
         path: `/content-types/${type.id}`,
@@ -46,7 +50,7 @@ export default {
     })
   },
   beforeMount() {
-    this.$store.dispatch('contentTypes/load');
+    this.loadTypes();
   },
 }
 </script>

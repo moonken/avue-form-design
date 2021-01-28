@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "ContentTypeList",
@@ -43,18 +43,25 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+      create: 'contentTypes/create',
+      update: 'contentTypes/update',
+      delete: 'contentTypes/delete'
+    }),
     error(err){
       this.$message.success('请查看控制台');
       console.log(err)
     },
-    rowSave(form,done){
-      this.$store.dispatch('contentTypes/create', form).then(done)
+    rowSave(form,done,loading){
+      loading();
+      this.create(form).then(done).catch(done)
     },
-    rowUpdate(form,index,done){
-      this.$store.dispatch('contentTypes/update', form).then(done)
+    rowUpdate(form,index,done, loading){
+      loading();
+      this.update(form).then(done).catch(done)
     },
     rowDel(form,index,done){
-      this.$store.dispatch('contentTypes/delete', form.id).then(done)
+      this.delete(form.id).then(done)
     },
     handleRowClick(row) {
       this.$router.push({

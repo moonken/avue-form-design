@@ -39,7 +39,7 @@ export default {
   },
   beforeMount() {
     let that = this;
-    this.$store.dispatch('contentTypes/load').then(() => {
+    this.loadTypes().then(() => {
       let structure = {...that.getType(that.$route.params.id).structure};
       if (!structure.column) {
         structure.column = [{
@@ -62,7 +62,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      updateStructure: 'contentTypes/updateStructure'
+      updateStructure: 'contentTypes/updateStructure',
+      loadTypes: 'contentTypes/load'
     }),
     handleSubmit(structure) {
       this.updateStructure({id: this.$route.params.id, structure});

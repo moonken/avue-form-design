@@ -12,7 +12,7 @@ function getCurrentContent(state, id) {
 // getters
 const getters = {
     getAll: (state) => {
-        return state.contents;
+        return [...state.contents];
     },
 
     getById: (state) => (id) => {
@@ -43,10 +43,8 @@ const actions = {
         })
     },
 
-    delete({ commit }, content) {
-        return httpClient.post(`/content-types/${content.typeId}/contents/${content.id}/delete`).then(() => {
-            commit('deleted', content.id);
-        })
+    delete( op , content) {
+        return httpClient.post(`/content-types/${content.typeId}/contents/${content.id}/delete`)
     },
 }
 
@@ -56,15 +54,11 @@ const mutations = {
         state.contents.push(content);
     },
     loaded (state, contents) {
-
         state.contents = contents;
     },
     updated (state, content) {
         let currentContent = getCurrentContent(state, content.id);
         currentContent.content = content.content;
-    },
-    deleted (state, id) {
-        state.contents = state.contents.filter(c => c.id !== id)
     },
 }
 

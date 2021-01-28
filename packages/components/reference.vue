@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "reference",
@@ -52,18 +52,22 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      loadReference: 'contentReference/load',
+    }),
     formatter(row) {
-      debugger
-      if (row.id) {
-        return this.currentType.name + '-' + row.content.name
+      if (row.name) {
+        return this.currentType.name + '-' + row.name
+      } else {
+        return this.currentType.name + '-' + row.id
       }
     },
     onLoad({page, value, data}, callback) {
       console.log(page, value, data)
       let that = this;
-      this.$store.dispatch('contentReference/load', this.contentType).then(() => {
+      this.loadReference(this.contentType).then(() => {
         if (value) {
-          callback(that.getById(value))
+          callback(that.getById(value).content)
         } else {
           callback({
             total: that.contents.length,

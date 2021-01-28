@@ -25,8 +25,11 @@ httpClient.interceptors.response.use(data=> {
         router.push({
             path: `/login`,
         })
+        return new Promise(() => {}) // pending的promise，中止promise链
+    } else if (err.response.status >= 400) {
+        Vue.prototype.$message.error(err.response.data.msg);
     }
-    return Promise.resolve(err);
+    return Promise.reject(err);
 })
 
 export {httpClient}
