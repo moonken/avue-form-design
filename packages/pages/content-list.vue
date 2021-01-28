@@ -1,7 +1,11 @@
 <template>
   <div>
     <avue-crud :data="contents.map(c => c.content)" @row-del="rowDel" @row-save="rowSave" @row-update="rowUpdate"
-               @error="error" :option="structure"></avue-crud>
+               @error="error" :option="structure">
+      <template slot="expand" slot-scope="{row}">
+        <avue-crud v-for="tableField in subTables" :data="row[tableField]" :option="{ ...structure.column.find(c => c.prop == tableField).children, refreshBtn: false, addBtn:false, menu:false, columnBtn: false} "></avue-crud>
+      </template>
+    </avue-crud>
   </div>
 </template>
 
@@ -12,7 +16,8 @@ export default {
   name: 'ContentList',
   data() {
     return {
-      structure: {}
+      structure: {},
+      subTables: []
     }
   },
   computed: {
@@ -46,7 +51,13 @@ export default {
       const that = this;
       this.loadContents(this.$route.params.id)
       this.loadTypes().then(function () {
-        that.structure = that.getType(that.$route.params.id).structure;
+        let structure = {...that.getType(that.$route.params.id).structure,
+          excelBtn:true,
+          expandRowKeys:[1],
+          rowKey:'id',};
+        that.subTables = structure.column.filter(c => c.type == 'dynamic').map(c => c.prop)
+        structure.expand = that.subTables.length > 0;
+        that.structure = structure;
       })
     },
 
