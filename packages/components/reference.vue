@@ -3,6 +3,8 @@
   <div>
     <avue-input-table :props="props" :column="column" :formatter="formatter" :on-load="onLoad" v-model="form"
                       placeholder="请选择数据"></avue-input-table>
+    <avue-crud v-if="loaded && value" :data="[getById(value).content]"
+               :option="{ ...currentType.structure, menu: false, refreshBtn: false, addBtn:false, menu:false, columnBtn: false} "></avue-crud>
   </div>
 </template>
 
@@ -19,26 +21,27 @@ export default {
         label: 'id',
         value: 'id'
       },
-      form: this.value
+      form: this.value,
+      loaded: false,
     }
   },
   watch: {
     form: function (newVal) {
-      console.log(1)
       this.$emit('input', newVal);
     },
     value: function (newVal) { // watch it
-      console.log(2)
       this.form = newVal;
     }
   },
   beforeMount() {
-    this.column = {
-      children: {
-        border: true,
-        column: this.currentType.structure.column,
-      },
-    }
+    this.loadTypes().then(() => {
+      this.column = {
+        children: {
+          border: true,
+          column: this.getType(this.contentType).structure.column,
+        },
+      }
+    });
   },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
@@ -54,8 +57,12 @@ export default {
   methods: {
     ...mapActions({
       loadReference: 'contentReference/load',
+      loadTypes: 'contentTypes/load',
     }),
     formatter(row) {
+      if (!this.currentType) {
+        return null;
+      }
       if (row.name) {
         return this.currentType.name + '-' + row.name
       } else {
@@ -66,6 +73,7 @@ export default {
       console.log(page, value, data)
       let that = this;
       this.loadReference(this.contentType).then(() => {
+        this.loaded = true;
         if (value) {
           callback(that.getById(value).content)
         } else {
@@ -82,5 +90,7 @@ export default {
 </script>
 
 <style scoped>
-
+/deep/ .avue-crud__menu {
+  display: none;
+}
 </style>

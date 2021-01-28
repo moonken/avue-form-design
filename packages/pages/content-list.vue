@@ -3,31 +3,47 @@
     <avue-crud :data="contents.map(c => c.content)" @row-del="rowDel" @row-save="rowSave" @row-update="rowUpdate"
                @error="error" :option="structure">
       <template slot="expand" slot-scope="{row}">
-        <avue-crud v-for="tableField in subTables" :data="row[tableField]" :option="{ ...structure.column.find(c => c.prop == tableField).children, refreshBtn: false, addBtn:false, menu:false, columnBtn: false} "></avue-crud>
+        <div class="expanded" v-for="subTable in subTables" :key="subTable.original.prop" >
+          <div class="title">{{subTable.original.label}}</div>
+          <avue-crud  :data="row[subTable.original.prop]" :option="subTable.structure">
+              <template v-for="ref in subTable.references" :slot="ref.prop" slot-scope="scope">
+                <div :key="ref.prop">
+                  <reference-view :content-id="scope.row[ref.prop]" :content-type="ref.contentType"></reference-view>
+                </div>
+              </template>
+          </avue-crud>
+        </div>
       </template>
+
+      <template v-for="ref in references" :slot="ref.prop" slot-scope="scope">
+        <div :key="ref.prop">
+          <reference-view :content-id="scope.row[ref.prop]" :content-type="ref.contentType"></reference-view>
+        </div>
+      </template>
+
     </avue-crud>
   </div>
 </template>
 
 <script>
 import {mapGetters, mapActions} from "vuex";
+import ReferenceView from "@components/reference-view";
 
 export default {
   name: 'ContentList',
+  components: {ReferenceView},
   data() {
     return {
       structure: {},
-      subTables: []
+      subTables: [],
+      references: [],
     }
   },
   computed: {
     ...mapGetters({
       getType: 'contentTypes/getType',
-      contents: 'contents/getAll'
+      contents: 'contents/getAll',
     }),
-  },
-  beforeMount() {
-    this.loadData();
   },
   watch: {
     '$route.params.id': {
@@ -44,20 +60,28 @@ export default {
       loadContents: 'contents/load',
       create: 'contents/create',
       update: 'contents/update',
-      delete: 'contents/delete'
+      delete: 'contents/delete',
     }),
 
     loadData() {
+      console.log(1)
       const that = this;
       this.loadContents(this.$route.params.id)
       this.loadTypes().then(function () {
         let structure = {...that.getType(that.$route.params.id).structure,
           excelBtn:true,
-          expandRowKeys:[1],
+          expandRowKeys:['id'],
           rowKey:'id',};
-        that.subTables = structure.column.filter(c => c.type == 'dynamic').map(c => c.prop)
+        that.subTables = structure.column.filter(c => c.type === 'dynamic').map(column => {
+          return {
+            original: column,
+            structure: { ...structure.column.find(c => c.prop === column.prop).children,  refreshBtn: false, addBtn:false, menu:false, columnBtn: false},
+            references: column.children.column.filter(c => c.type === 'reference')
+          }
+        })
         structure.expand = that.subTables.length > 0;
         that.structure = structure;
+        that.references = structure.column.filter(c => c.type === 'reference')
       })
     },
 
@@ -69,6 +93,7 @@ export default {
       console.log(err)
     },
     rowSave(form, done, loading) {
+      debugger
       loading()
       this.create({content: form, typeId: this.$route.params.id}).then(done).catch(done)
     },
@@ -82,3 +107,17 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.title {
+  margin: 0 20px;
+}
+
+/deep/ .expanded .avue-crud__menu {
+      display: none;
+}
+
+/deep/ .expanded .avue-crud__pagination {
+      display: none;
+}
+</style>

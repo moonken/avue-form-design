@@ -22,19 +22,19 @@ const getters = {
 
 // actions
 const actions = {
-    create({ commit }, contentType) {
+    create({commit}, contentType) {
         return httpClient.post('/content-types', contentType).then(res => {
             commit('created', res.data)
         })
     },
 
-    update({ commit }, contentType) {
+    update({commit}, contentType) {
         return httpClient.post(`/content-types/${contentType.id}`, contentType).then((res) => {
             commit('updated', res.data)
         })
     },
 
-    load({ commit }) {
+    load({commit}) {
         return httpClient.get('/content-types').then(res => {
             commit('loaded', res.data);
         })
@@ -44,14 +44,14 @@ const actions = {
         return httpClient.post(`/content-types/${id}/delete`)
     },
 
-    updateStructure({ commit }, contentType) {
+    updateStructure({commit}, contentType) {
         if (!contentType.structure.column.find(c => c.prop === 'id')) {
             contentType.structure.column.splice(0, 0, {
-                label:'ID',
-                prop:'id',
+                label: 'ID',
+                prop: 'id',
                 addDisplay: false,
                 editDisplay: false,
-                showColumn:false,
+                showColumn: false,
                 display: false,
                 readonly: true,
                 span: 24,
@@ -72,46 +72,53 @@ const actions = {
                 type: "input"
             })
         }
+
         return httpClient.post(`/content-types/${contentType.id}/structure`, contentType).then((res) => {
             commit('updated', res.data)
         })
     },
 }
 
+function initColumn(c) {
+    return c.column.forEach(c => {
+        if (c.type === 'upload') {
+            c.action = '/files/upload'
+            c.listType = 'picture-card'
+            c.propsHttp = {
+                res: 'data.data',
+                url: 'url',
+                name: 'name'
+            }
+        }
+
+        if (c.type === 'reference') {
+            c.slot =true;
+        }
+
+        if (c.type === 'dynamic') {
+            initColumn(c.children)
+        }
+
+
+    });
+}
+
 // mutations
 const mutations = {
-    created (state, contentType) {
+    created(state, contentType) {
         state.contentTypes.push(contentType);
     },
-    loaded (state, contentTypes) {
-        contentTypes.forEach(c => {c.group && c.group.forEach(g => {
-            g.column.forEach(c => {
-                if (c.type === 'upload') {
-                    c.action = '/files/upload'
-                    c.listType = 'picture-card'
-                    c.propsHttp = {
-                        res: 'data.data',
-                        url: 'url',
-                        name: 'name'
-                    }
-                }
+    loaded(state, contentTypes) {
+        contentTypes.map(c => c.structure).forEach(c => {
+            c.group && c.group.forEach(g => {
+                initColumn(g)
             })
-        })
 
-        c.column && c.column.forEach(c => {
-            if (c.type === 'upload') {
-                c.action = '/files/upload'
-                c.listType = 'picture-card'
-                c.propsHttp = {
-                    res: 'data.data',
-                    url: 'url',
-                    name: 'name'
-                }
-            }
-        })})
+            c.column && initColumn(c)
+        })
         state.contentTypes = contentTypes;
     },
-    updated (state, contentType) {
+    updated(state, contentType) {
         let currentType = findType(state, contentType.id);
         currentType.name = contentType.name;
         currentType.structure = contentType.structure;

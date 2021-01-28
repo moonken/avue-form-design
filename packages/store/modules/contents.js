@@ -14,14 +14,14 @@ const getters = {
     getAll: (state) => {
         return [...state.contents];
     },
-
-    getById: (state) => (id) => {
-        return getCurrentContent(state, id);
-    },
 }
 
 // actions
 const actions = {
+    getById: (op, {typeId, id}) => {
+        return httpClient.get(`/content-types/${typeId}/contents/${id}`);
+    },
+
     create({ commit }, content) {
         content.id = uuid.v4()
         content.content.id = content.id
