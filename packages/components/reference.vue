@@ -3,8 +3,6 @@
   <div>
     <avue-input-table :props="props" :column="column" :formatter="formatter" :on-load="onLoad" v-model="form"
                       placeholder="请选择数据"></avue-input-table>
-    <avue-crud v-if="loaded && value" :data="[getById(value).content]"
-               :option="{ ...currentType.structure, menu: false, refreshBtn: false, addBtn:false, menu:false, columnBtn: false} "></avue-crud>
   </div>
 </template>
 
