@@ -38,6 +38,11 @@
                                  @change="$emit('change')">
               </widget-form-group>
             </div>
+            <div v-else-if="column.prop == 'id' || column.prop == 'typeId'"
+                 :key="index"
+                 :style="{ display: 'none' }"
+                 >
+            </div>
             <el-col v-else
                     :key="index"
                     :md="column.span || 12"

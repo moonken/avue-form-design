@@ -23,33 +23,32 @@ const getters = {
 // actions
 const actions = {
     create({ commit }, contentType) {
-
-        httpClient.post('/content-types', contentType).then(res => {
+        return httpClient.post('/content-types', contentType).then(res => {
             commit('created', res.data)
         })
     },
 
     update({ commit }, contentType) {
-        httpClient.post(`/content-types/${contentType.id}`, contentType).then((res) => {
+        return httpClient.post(`/content-types/${contentType.id}`, contentType).then((res) => {
             commit('updated', res.data)
         })
     },
 
     load({ commit }) {
-        httpClient.get('/content-types').then(res => {
+        return httpClient.get('/content-types').then(res => {
             commit('loaded', res.data);
         })
     },
 
     delete({ commit }, id) {
-        httpClient.post(`/content-types/${id}/delete`).then(() => {
+        return httpClient.post(`/content-types/${id}/delete`).then(() => {
             commit('deleted', id);
         })
     },
 
     updateStructure({ commit }, contentType) {
         if (!contentType.structure.column.find(c => c.prop === 'id')) {
-            contentType.structure.column.push({
+            contentType.structure.column.splice(0, 0, {
                 label:'ID',
                 prop:'id',
                 addDisplay: false,
@@ -63,7 +62,7 @@ const actions = {
         }
 
         if (!contentType.structure.column.find(c => c.prop === 'typeId')) {
-            contentType.structure.column.push({
+            contentType.structure.column.splice(0, 0, {
                 label: '类型',
                 prop: 'typeId',
                 addDisplay: false,
@@ -75,7 +74,7 @@ const actions = {
                 type: "input"
             })
         }
-        httpClient.post(`/content-types/${contentType.id}/structure`, contentType).then((res) => {
+        return httpClient.post(`/content-types/${contentType.id}/structure`, contentType).then((res) => {
             commit('updated', res.data)
         })
     },

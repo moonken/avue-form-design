@@ -1,8 +1,9 @@
 <template>
 
-<div>
-  <avue-input-table :props="props" :column="column" :formatter="formatter" :on-load="onLoad" v-model="form" placeholder="请选择数据"></avue-input-table>
-</div>
+  <div>
+    <avue-input-table :props="props" :column="column" :formatter="formatter" :on-load="onLoad" v-model="form"
+                      placeholder="请选择数据"></avue-input-table>
+  </div>
 </template>
 
 <script>
@@ -10,7 +11,7 @@ import {mapGetters} from "vuex";
 
 export default {
   name: "reference",
-  props: {label: String, value: {type: String, default:''}, contentType: Number},
+  props: {label: String, value: {type: String, default: ''}, contentType: Number},
   data() {
     return {
       column: {},
@@ -26,14 +27,14 @@ export default {
       console.log(1)
       this.$emit('input', newVal);
     },
-    value: function(newVal) { // watch it
+    value: function (newVal) { // watch it
       console.log(2)
       this.form = newVal;
     }
   },
   beforeMount() {
     this.column = {
-      children:{
+      children: {
         border: true,
         column: this.currentType.structure.column,
       },
@@ -46,35 +47,31 @@ export default {
       contents: 'contentReference/getAll',
       getById: 'contentReference/getById'
     }),
-    currentType () {
+    currentType() {
       return this.getType(this.contentType)
     },
   },
-  methods:{
-    formatter(row){
+  methods: {
+    formatter(row) {
+      debugger
       if (row.id) {
-        return this.currentType.name + '-' + row.id
+        return this.currentType.name + '-' + row.content.name
       }
     },
-    onLoad({ page, value,data }, callback){
-
-      this.$store.dispatch('contentReference/load', this.contentType);
-      console.log(page, value,data)
+    onLoad({page, value, data}, callback) {
+      console.log(page, value, data)
       let that = this;
-
-      if (value) {
-        debugger
-        setTimeout(() => {
+      this.$store.dispatch('contentReference/load', this.contentType).then(() => {
+        if (value) {
           callback(that.getById(value))
-        }, 1000)
-      } else {
-        setTimeout(() => {
+        } else {
           callback({
             total: that.contents.length,
             data: that.contents.map(c => c.content)
           })
-        }, 1000)
-      }
+        }
+      });
+
     }
   }
 }

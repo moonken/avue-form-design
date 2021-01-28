@@ -26,19 +26,19 @@ const actions = {
         content.id = uuid.v4()
         content.content.id = content.id
         content.content.typeId = content.typeId
-        httpClient.post(`/content-types/${content.typeId}/contents`, content).then(res => {
+        return httpClient.post(`/content-types/${content.typeId}/contents`, content).then(res => {
             commit('created', res.data)
         })
     },
 
     update({ commit }, content) {
-        httpClient.post(`/content-types/${content.content.typeId}/contents/${content.content.id}`, content).then((res) => {
+        return httpClient.post(`/content-types/${content.content.typeId}/contents/${content.content.id}`, content).then((res) => {
             commit('updated', res.data)
         })
     },
 
     load({ commit }, typeId) {
-        httpClient.get(`/content-types/${typeId}/contents`).then(res => {
+        return httpClient.get(`/content-types/${typeId}/contents`).then(res => {
             commit('loaded', res.data);
         })
     },
@@ -50,7 +50,6 @@ const mutations = {
         state.contents.push(content);
     },
     loaded (state, contents) {
-
         state.contents = contents;
     },
     updated (state, content) {

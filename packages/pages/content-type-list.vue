@@ -48,16 +48,13 @@ export default {
       console.log(err)
     },
     rowSave(form,done){
-      this.$store.dispatch('contentTypes/create', form)
-      done();
+      this.$store.dispatch('contentTypes/create', form).then(done)
     },
     rowUpdate(form,index,done){
-      this.$store.dispatch('contentTypes/update', form)
-      done();
+      this.$store.dispatch('contentTypes/update', form).then(done)
     },
     rowDel(form,index,done){
-      this.$store.dispatch('contentTypes/delete', form.id)
-      done();
+      this.$store.dispatch('contentTypes/delete', form.id).then(done)
     },
     handleRowClick(row) {
       this.$router.push({

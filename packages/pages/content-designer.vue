@@ -39,9 +39,26 @@ export default {
   },
   beforeMount() {
     let that = this;
-    setTimeout(() => {
-      that.options = that.getType(that.$route.params.id).structure;
-    }, 1000)
+    this.$store.dispatch('contentTypes/load').then(() => {
+      let structure = {...that.getType(that.$route.params.id).structure};
+      if (!structure.column) {
+        structure.column = [{
+          type: 'input',
+          label: '名称',
+          span: 24,
+          display: true,
+          prop: 'name',
+          required: true,
+          rules: [
+            {
+              required: true,
+              message: '名称必须填写'
+            }
+          ]
+        },]
+      }
+      that.options = structure;
+    })
   },
   methods: {
     ...mapActions({

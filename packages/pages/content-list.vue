@@ -9,8 +9,7 @@ import {mapGetters, mapActions} from "vuex";
 
 function loadData() {
   const that = this;
-  this.$store.dispatch('contents/load', this.$route.params.id);
-  setTimeout(function () {
+  this.$store.dispatch('contents/load', this.$route.params.id).then(() => {
     let structure = {...that.getType(that.$route.params.id).structure}
 
     structure.group && structure.group.forEach(g => {
@@ -40,7 +39,7 @@ function loadData() {
     })
 
     that.structure = structure;
-  }, 1000)
+  })
 }
 
 export default {
@@ -79,16 +78,13 @@ export default {
       console.log(err)
     },
     rowSave(form,done){
-      this.$store.dispatch('contents/create', {content: form, typeId: this.$route.params.id})
-      done();
+      this.$store.dispatch('contents/create', {content: form, typeId: this.$route.params.id}).then(done)
     },
     rowUpdate(form,index,done){
-      this.$store.dispatch('contents/update', {content: form, typeId: this.$route.params.id})
-      done();
+      this.$store.dispatch('contents/update', {content: form, typeId: this.$route.params.id}).then(done)
     },
     rowDel(form,index,done){
-      this.$store.dispatch('contents/delete', form)
-      done();
+      this.$store.dispatch('contents/delete', form).then(done)
     },
   }
 }
