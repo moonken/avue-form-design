@@ -43,8 +43,10 @@ const actions = {
         })
     },
 
-    delete( op , content) {
-        return httpClient.post(`/content-types/${content.typeId}/contents/${content.id}/delete`)
+    delete( { commit } , content) {
+        return httpClient.post(`/content-types/${content.typeId}/contents/${content.id}/delete`).then(() => {
+            commit('deleted', content.id);
+        })
     },
 }
 
@@ -59,6 +61,9 @@ const mutations = {
     updated (state, content) {
         let currentContent = getCurrentContent(state, content.id);
         currentContent.content = content.content;
+    },
+    deleted(state, id) {
+        state.contents = state.contents.filter(c => c.id !== id);
     },
 }
 

@@ -98,8 +98,8 @@ export default {
       loading()
       this.update({content: form, typeId: this.$route.params.id}).then(done)
     },
-    rowDel(form, index, done) {
-      this.delete(form).then(done)
+    rowDel(form) {
+      this.delete(form)
     },
   }
 }

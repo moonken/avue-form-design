@@ -46,8 +46,10 @@ const actions = {
         })
     },
 
-    delete(op, id) {
-        return httpClient.post(`/content-types/${id}/delete`)
+    delete({commit}, id) {
+        return httpClient.post(`/content-types/${id}/delete`).then(() => {
+            commit('deleted', id);
+        })
     },
 
     updateStructure({commit}, contentType) {
@@ -123,6 +125,9 @@ const mutations = {
     loaded(state, contentTypes) {
         contentTypes.map(c => c.structure).forEach(structure => initContentStructure(structure))
         state.contentTypes = contentTypes;
+    },
+    deleted(state, id) {
+        state.contentTypes = state.contentTypes.filter(c => c.id !== id);
     },
     updated(state, contentType) {
         let currentType = findType(state, contentType.id);

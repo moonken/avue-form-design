@@ -60,8 +60,8 @@ export default {
       loading();
       this.update(form).then(done)
     },
-    rowDel(form,index,done){
-      this.delete(form.id).then(done)
+    rowDel(form){
+      this.delete(form.id)
     },
     handleRowClick(row) {
       this.$router.push({
