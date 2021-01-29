@@ -69,7 +69,8 @@ export default {
         let structure = {...that.getType(that.$route.params.id).structure,
           expandRowKeys:['id'],
           rowKey:'id',};
-        that.subTables = structure.column.filter(c => c.type === 'dynamic').map(column => {
+        let columns = structure.column || []
+        that.subTables = columns.filter(c => c.type === 'dynamic').map(column => {
           return {
             original: column,
             structure: { ...structure.column.find(c => c.prop === column.prop).children,  refreshBtn: false, addBtn:false, menu:false, columnBtn: false},
@@ -78,7 +79,7 @@ export default {
         })
         structure.expand = that.subTables.length > 0;
         that.structure = structure;
-        that.references = structure.column.filter(c => c.type === 'reference')
+        that.references = columns.filter(c => c.type === 'reference')
       })
     },
 

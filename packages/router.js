@@ -21,16 +21,17 @@ export const router = new VueRouter({
             name: 'spaces', path: '/spaces', component: SpaceList ,
         },
         {
-            name: 'spaceHome', path: '/spaces/:spaceId', component: SpaceLayout ,
+            path: '/spaces/:spaceId', component: SpaceLayout ,
+            redirect: {name: 'contentTypes'},
             children: [
                 {
-                    name: 'space', path: '/', component: ContentTypeList ,
+                    name: 'contentTypes', path: 'content-types', component: ContentTypeList ,
                 },
                 {
-                    name: 'contentType', path: '/content-types/:id', component: ContentList ,
+                    path: 'content-types/:id', component: ContentList ,
                 },
                 {
-                    name: 'contentTypeDesigner', path: '/content-types/:id/designer', component: ContentDesigner ,
+                    path: 'content-types/:id/designer', component: ContentDesigner ,
                 }
             ]
         },

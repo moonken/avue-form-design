@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div>
     <div class="nav-bar">
       <el-menu
           class="el-menu-demo"
@@ -7,7 +7,7 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-        <el-menu-item @click="$router.push({path: `/spaces/${this.$route.params.spaceId}/content-types`})" index="1">内容类型</el-menu-item>
+        <el-menu-item @click="handleSelect(null)" index="1">内容类型</el-menu-item>
         <el-submenu index="2">
           <template slot="title">内容</template>
           <el-menu-item v-for="type in allTypes" :key="type.id" index="type.id" @click="handleSelect(type)">{{ type.name }}</el-menu-item>
@@ -43,9 +43,15 @@ export default {
       cleatTypes: 'contentTypes/clear'
     }),
     handleSelect(type) {
+      let gotoPath = `/spaces/${this.$route.params.spaceId}/content-types`
+      if (type) {
+        gotoPath = `${gotoPath}/${type.id}`
+      }
+
       this.$router.push({
-        path: `/spaces/${this.$route.params.spaceId}/content-types/${type.id}`,
+        path: gotoPath,
       })
+
     }
   },
   computed: {
@@ -58,12 +64,6 @@ export default {
 </script>
 
 <style scoped>
-.main {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
 .nav-bar {
   /*height: 8vh;*/
 }
