@@ -66,7 +66,9 @@ export default {
       loadTypes: 'contentTypes/load'
     }),
     handleSubmit(structure) {
-      this.updateStructure({id: this.$route.params.id, structure});
+      this.updateStructure({id: this.$route.params.id, structure}).then(() => {
+        this.$router.push({path: `/content-types/${this.$route.params.id}`})
+      });
     },
   }
 }

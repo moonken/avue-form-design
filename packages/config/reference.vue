@@ -32,8 +32,13 @@ export default {
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
     ...mapGetters({
-      contentTypes: 'contentTypes/getAll',
+      allTypes: 'contentTypes/getAll',
     }),
+
+    contentTypes() {
+      const currentId = this.$route.params.id;
+      return this.allTypes.filter(c => c.id != currentId)
+    }
 
   },
   methods: {
