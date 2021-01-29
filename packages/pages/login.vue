@@ -44,7 +44,7 @@ export default {
         console.log(res);
         localStorage.setItem('token', res.data.token)
         this.$router.push({
-          path: `/content-types`,
+          path: `/spaces`,
         })
       }).catch(err => {
         console.log(err);

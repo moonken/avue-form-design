@@ -27,7 +27,8 @@ httpClient.interceptors.response.use(data=> {
         })
         return new Promise(() => {}) // pending的promise，中止promise链
     } else if (err.response.status >= 400) {
-        Vue.prototype.$message.error(err.response.data.msg);
+        let data = err.response.data;
+        Vue.prototype.$message.error(data.error || data.msg);
     }
     return Promise.reject(err);
 })

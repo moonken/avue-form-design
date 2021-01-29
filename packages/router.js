@@ -3,6 +3,8 @@ import Login from "@/pages/login";
 import ContentTypeList from "@/pages/content-type-list";
 import ContentList from "@/pages/content-list";
 import ContentDesigner from "@/pages/content-designer";
+import SpaceList from "@/pages/space-list";
+import SpaceLayout from "@/pages/space-layout";
 
 export const router = new VueRouter({
     mode: 'hash',
@@ -10,19 +12,28 @@ export const router = new VueRouter({
     routes:[
         {
             path: '/',
-            redirect: '/content-types'
+            redirect: '/spaces'
         },
         {
             name: 'login', path: '/login', component: Login ,
         },
         {
-            name: 'contentTypes', path: '/content-types', component: ContentTypeList ,
+            name: 'spaces', path: '/spaces', component: SpaceList ,
         },
         {
-            path: '/content-types/:id', component: ContentList ,
+            name: 'spaceHome', path: '/spaces/:spaceId', component: SpaceLayout ,
+            children: [
+                {
+                    name: 'space', path: '/', component: ContentTypeList ,
+                },
+                {
+                    name: 'contentType', path: '/content-types/:id', component: ContentList ,
+                },
+                {
+                    name: 'contentTypeDesigner', path: '/content-types/:id/designer', component: ContentDesigner ,
+                }
+            ]
         },
-        {
-            path: '/content-types/:id/designer', component: ContentDesigner ,
-        }
+
     ]
 });

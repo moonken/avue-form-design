@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      updateContentType: 'contentTypes/update',
       loadTypes: 'contentTypes/load',
       loadContents: 'contents/load',
       create: 'contents/create',
@@ -65,8 +64,8 @@ export default {
 
     loadData() {
       const that = this;
-      this.loadContents(this.$route.params.id)
-      this.loadTypes().then(function () {
+      this.loadContents({spaceId: this.$route.params.spaceId, typeId: this.$route.params.id})
+      this.loadTypes(this.$route.params.spaceId).then(function () {
         let structure = {...that.getType(that.$route.params.id).structure,
           expandRowKeys:['id'],
           rowKey:'id',};
@@ -92,14 +91,14 @@ export default {
     },
     rowSave(form, done, loading) {
       loading()
-      this.create({content: form, typeId: this.$route.params.id}).then(done)
+      this.create({content: form, typeId: this.$route.params.id, spaceId: this.$route.params.spaceId}).then(done)
     },
     rowUpdate(form, index, done, loading) {
       loading()
-      this.update({content: form, typeId: this.$route.params.id}).then(done)
+      this.update({content: form, typeId: this.$route.params.id, spaceId: this.$route.params.spaceId}).then(done)
     },
     rowDel(form) {
-      this.delete(form)
+      this.delete({spaceId: this.$route.params.spaceId, content: form})
     },
   }
 }

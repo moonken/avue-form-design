@@ -40,7 +40,7 @@ export default {
   },
   beforeMount() {
     let that = this;
-    this.loadTypes().then(() => {
+    this.loadTypes(this.$route.params.spaceId).then(() => {
       let structure = {...that.getType(this.$route.params.id)};
       if (!structure.column) {
         structure.column = [{
@@ -67,8 +67,8 @@ export default {
       loadTypes: 'contentTypes/load',
     }),
     handleSubmit(structure) {
-      this.updateStructure({id: this.$route.params.id, structure}).then(() => {
-        this.$router.push({path: `/content-types/${this.$route.params.id}`})
+      this.updateStructure({spaceId: this.$route.params.spaceId, contentType: {id: this.$route.params.id, structure}}).then(() => {
+        this.$router.push({path: `/spaces/${this.$route.params.spaceId}/content-types/${this.$route.params.id}`})
       });
     },
   }

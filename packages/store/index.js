@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import contentTypes from './modules/content-types'
 import contents from './modules/contents'
+import spaces from './modules/spaces'
 import contentReference from './modules/contents-reference'
 import vuexActionDebounce from '@xunlei/vuex-action-debounce'
 
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     modules: {
         contentTypes,
         contents,
-        contentReference
+        contentReference,
+        spaces
     },
     plugins: [ vuexActionDebouncePlugin ],
     strict: debug,

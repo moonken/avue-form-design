@@ -22,37 +22,41 @@ const getters = {
 
 // actions
 const actions = {
-    create({commit}, contentType) {
-        return httpClient.post('/content-types', contentType).then(res => {
+    create({commit}, {spaceId, contentType}) {
+        return httpClient.post(`/spaces/${spaceId}/content-types`, contentType).then(res => {
             commit('created', res.data)
         })
     },
 
-    update({commit}, contentType) {
-        return httpClient.post(`/content-types/${contentType.id}`, contentType).then((res) => {
+    update({commit}, {spaceId, contentType}) {
+        return httpClient.post(`/spaces/${spaceId}/content-types/${contentType.id}`, contentType).then((res) => {
             commit('updated', res.data)
         })
     },
 
-    load({commit}) {
-        return httpClient.get('/content-types').then(res => {
+    load({commit}, spaceId) {
+        return httpClient.get(`/spaces/${spaceId}/content-types`).then(res => {
             commit('loaded', res.data);
         })
     },
 
-    getById({commit}, id) {
-        return httpClient.get(`/content-types/${id}`).then(res => {
+    clear({commit}) {
+        commit('cleared');
+    },
+
+    getById({commit}, {spaceId, id}) {
+        return httpClient.get(`/spaces/${spaceId}/content-types/${id}`).then(res => {
             commit('updated', res.data);
         })
     },
 
-    delete({commit}, id) {
-        return httpClient.post(`/content-types/${id}/delete`).then(() => {
+    delete({commit}, {spaceId, id}) {
+        return httpClient.post(`/spaces/${spaceId}/content-types/${id}/delete`).then(() => {
             commit('deleted', id);
         })
     },
 
-    updateStructure({commit}, contentType) {
+    updateStructure({commit}, {spaceId, contentType}) {
         if (!contentType.structure.column.find(c => c.prop === 'id')) {
             contentType.structure.column.splice(0, 0, {
                 label: 'ID',
@@ -81,7 +85,7 @@ const actions = {
             })
         }
 
-        return httpClient.post(`/content-types/${contentType.id}/structure`, contentType).then((res) => {
+        return httpClient.post(`/spaces/${spaceId}/content-types/${contentType.id}/structure`, contentType).then((res) => {
             commit('updated', res.data)
         })
     },
@@ -121,6 +125,9 @@ function initContentStructure(structure) {
 const mutations = {
     created(state, contentType) {
         state.contentTypes.push(contentType);
+    },
+    cleared(state) {
+        state.contentTypes = []
     },
     loaded(state, contentTypes) {
         contentTypes.map(c => c.structure).forEach(structure => initContentStructure(structure))

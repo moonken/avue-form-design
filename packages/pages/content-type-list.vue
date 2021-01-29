@@ -54,18 +54,18 @@ export default {
     },
     rowSave(form,done,loading){
       loading();
-      this.create(form).then(done)
+      this.create({spaceId: this.$route.params.spaceId, contentType: form}).then(done)
     },
     rowUpdate(form,index,done, loading){
       loading();
-      this.update(form).then(done)
+      this.update({spaceId: this.$route.params.spaceId, contentType: form}).then(done)
     },
     rowDel(form){
-      this.delete(form.id)
+      this.delete({spaceId: this.$route.params.spaceId, id: form.id})
     },
     handleRowClick(row) {
       this.$router.push({
-        path: `/content-types/${row.id}/designer`,
+        path: `/spaces/${this.$route.params.spaceId}/content-types/${row.id}/designer`,
       })
     },
   }

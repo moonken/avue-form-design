@@ -25,7 +25,6 @@ Vue.use(ElementUI)
 Vue.config.devtools = true;
 Vue.config.productionTip = false
 
-store.dispatch('contentTypes/load')
 new Vue({
   router: router,
   store,

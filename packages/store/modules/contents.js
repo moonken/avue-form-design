@@ -18,33 +18,34 @@ const getters = {
 
 // actions
 const actions = {
-    getById: (op, {typeId, id}) => {
-        return httpClient.get(`/content-types/${typeId}/contents/${id}`);
+    getById: (op, {spaceId, typeId, id}) => {
+        return httpClient.get(`/spaces/${spaceId}/content-types/${typeId}/contents/${id}`);
     },
 
-    create({ commit }, content) {
-        content.id = uuid.v4()
-        content.content.id = content.id
-        content.content.typeId = content.typeId
-        return httpClient.post(`/content-types/${content.typeId}/contents`, content).then(res => {
+    create({ commit }, {spaceId, typeId, content}) {
+        const id = uuid.v4();
+        content.id = id;
+        content.typeId = typeId
+        return httpClient.post(`/spaces/${spaceId}/content-types/${content.typeId}/contents`, {id, typeId, content}).then(res => {
             commit('created', res.data)
         })
     },
 
-    update({ commit }, content) {
-        return httpClient.post(`/content-types/${content.content.typeId}/contents/${content.content.id}`, content).then((res) => {
+    update({ commit }, {spaceId, typeId, content}) {
+        const id = content.id;
+        return httpClient.post(`/spaces/${spaceId}/content-types/${typeId}/contents/${id}`, {id, typeId, content}).then((res) => {
             commit('updated', res.data)
         })
     },
 
-    load({ commit }, typeId) {
-        return httpClient.get(`/content-types/${typeId}/contents`).then(res => {
+    load({ commit }, {spaceId, typeId}) {
+        return httpClient.get(`/spaces/${spaceId}/content-types/${typeId}/contents`).then(res => {
             commit('loaded', res.data);
         })
     },
 
-    delete( { commit } , content) {
-        return httpClient.post(`/content-types/${content.typeId}/contents/${content.id}/delete`).then(() => {
+    delete( { commit } , {spaceId, content}) {
+        return httpClient.post(`/spaces/${spaceId}/content-types/${content.typeId}/contents/${content.id}/delete`).then(() => {
             commit('deleted', content.id);
         })
     },
