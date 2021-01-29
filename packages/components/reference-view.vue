@@ -50,6 +50,10 @@ export default {
     }),
 
     loadData() {
+      if (!this.contentId) {
+        return;
+      }
+
       this.getContent({typeId: this.contentType, id: this.contentId}).then(res => {
         this.data = [res.data.content]
       })

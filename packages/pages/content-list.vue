@@ -64,7 +64,6 @@ export default {
     }),
 
     loadData() {
-      console.log(1)
       const that = this;
       this.loadContents(this.$route.params.id)
       this.loadTypes().then(function () {

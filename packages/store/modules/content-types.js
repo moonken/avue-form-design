@@ -40,6 +40,12 @@ const actions = {
         })
     },
 
+    getById({commit}, id) {
+        return httpClient.get(`/content-types/${id}`).then(res => {
+            commit('updated', res.data);
+        })
+    },
+
     delete(op, id) {
         return httpClient.post(`/content-types/${id}/delete`)
     },
@@ -98,9 +104,15 @@ function initColumn(c) {
         if (c.type === 'dynamic') {
             initColumn(c.children)
         }
-
-
     });
+}
+
+function initContentStructure(structure) {
+    structure && structure.group && structure.group.forEach(g => {
+        initColumn(g)
+    })
+
+    structure && structure.column && initColumn(structure)
 }
 
 // mutations
@@ -109,19 +121,14 @@ const mutations = {
         state.contentTypes.push(contentType);
     },
     loaded(state, contentTypes) {
-        contentTypes.map(c => c.structure).forEach(c => {
-            c && c.group && c.group.forEach(g => {
-                initColumn(g)
-            })
-
-            c && c.column && initColumn(c)
-        })
+        contentTypes.map(c => c.structure).forEach(structure => initContentStructure(structure))
         state.contentTypes = contentTypes;
     },
     updated(state, contentType) {
         let currentType = findType(state, contentType.id);
         currentType.name = contentType.name;
         currentType.structure = contentType.structure;
+        initContentStructure(currentType.structure)
     },
 }
 

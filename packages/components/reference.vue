@@ -14,7 +14,6 @@ export default {
   props: {label: String, value: {type: String, default: ''}, contentType: Number},
   data() {
     return {
-      column: {},
       props: {
         label: 'id',
         value: 'id'
@@ -31,16 +30,6 @@ export default {
       this.form = newVal;
     }
   },
-  beforeMount() {
-    this.loadTypes().then(() => {
-      this.column = {
-        children: {
-          border: true,
-          column: this.getType(this.contentType).structure.column,
-        },
-      }
-    });
-  },
   computed: {
     ...mapGetters({
       getType: 'contentTypes/getType',
@@ -50,11 +39,18 @@ export default {
     currentType() {
       return this.getType(this.contentType)
     },
+    column() {
+      return {
+        children: {
+          border: true,
+              column: this.currentType && this.currentType.structure.column,
+        },
+      }
+    }
   },
   methods: {
     ...mapActions({
       loadReference: 'contentReference/load',
-      loadTypes: 'contentTypes/load',
     }),
     formatter(row) {
       if (!this.currentType) {

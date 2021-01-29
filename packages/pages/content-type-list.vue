@@ -36,9 +36,6 @@ export default {
       },
     };
   },
-  beforeMount() {
-    this.loadTypes();
-  },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
     ...mapGetters({
@@ -50,7 +47,6 @@ export default {
       create: 'contentTypes/create',
       update: 'contentTypes/update',
       delete: 'contentTypes/delete',
-      loadTypes: 'contentTypes/load',
     }),
     error(err){
       this.$message.success('请查看控制台');

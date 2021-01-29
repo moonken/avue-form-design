@@ -3,7 +3,8 @@
     <avue-form-design :options="options"
                       @submit="handleSubmit"
                       storage
-                      :custom-fields="customFields"></avue-form-design></div>
+                      :custom-fields="customFields"></avue-form-design>
+  </div>
 </template>
 
 <script>
@@ -26,7 +27,7 @@ export default {
         //   }
         // },
       ],
-      options: { column: [] }
+      options: {column: []}
     }
   },
   computed: {
@@ -40,7 +41,7 @@ export default {
   beforeMount() {
     let that = this;
     this.loadTypes().then(() => {
-      let structure = {...that.getType(that.$route.params.id).structure};
+      let structure = {...that.getType(this.$route.params.id)};
       if (!structure.column) {
         structure.column = [{
           type: 'input',
@@ -63,7 +64,7 @@ export default {
   methods: {
     ...mapActions({
       updateStructure: 'contentTypes/updateStructure',
-      loadTypes: 'contentTypes/load'
+      loadTypes: 'contentTypes/load',
     }),
     handleSubmit(structure) {
       this.updateStructure({id: this.$route.params.id, structure}).then(() => {

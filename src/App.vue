@@ -49,9 +49,6 @@ export default {
       allTypes: 'contentTypes/getAll'
     })
   },
-  beforeMount() {
-    this.loadTypes();
-  },
 }
 </script>
 
