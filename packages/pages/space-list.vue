@@ -7,7 +7,7 @@
             <span>{{ space.name }}</span>
             <div class="bottom clearfix">
               <user-avatar-list
-                  :users="[{id:1, name: 'z1hangsan'},{id:2, name: 'z2hangsan'},{id:3, name: 'zhangsan2'}]"></user-avatar-list>
+                  :members="space.members"></user-avatar-list>
 
               <el-popconfirm
                   title="这是一段内容确定删除吗？" @confirm="handleDelete(space.id)"
@@ -19,24 +19,33 @@
               <div @click="handleEdit(space)" class="icon-button">
                 <i class="el-icon-edit"></i>
               </div>
-              <el-button type="text" class="button">成员管理</el-button>
+              <el-button @click="showMembers(space.id)" type="text" class="button">成员管理</el-button>
             </div>
           </div>
         </div>
       </el-card>
       <el-card class="space-card" :body-style="{ padding: '0px' }">
-          <el-row @click="addNew()" type="flex" class="add-container">
+        <div @click="addNew()">
+          <el-row type="flex" class="add-container">
             <el-col class="add-icon" :span="24"><i class="el-icon-circle-plus-outline"></i></el-col>
           </el-row>
+        </div>
       </el-card>
 
     <el-dialog
-        title="提示"
+        title="编辑"
         :visible.sync="dialogVisible"
-        width="30%"
+        width="40%"
         :before-close="handleClose">
       <avue-form ref="form" v-model="newSpace" @submit="handleSubmit" :option="option">
       </avue-form>
+    </el-dialog>
+    <el-dialog
+        title="成员管理"
+        :visible.sync="membersDialogVisible"
+        width="40%"
+        :before-close="handleMembersClose">
+      <member-list :space-id="currentSpaceId"></member-list>
     </el-dialog>
   </el-row>
 </template>
@@ -44,14 +53,17 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import UserAvatarList from "@components/user-avatar-list";
+import MemberList from "@components/member-list";
 
 export default {
   name: "SpaceList",
-  components: {UserAvatarList},
+  components: {MemberList, UserAvatarList},
   data() {
     return {
       newSpace: {},
+      currentSpaceId: null,
       dialogVisible: false,
+      membersDialogVisible: false,
       option: {
         column: [
           {
@@ -132,6 +144,15 @@ export default {
 
     handleClose() {
       this.dialogVisible = false;
+    },
+
+    handleMembersClose() {
+      this.membersDialogVisible = false;
+    },
+
+    showMembers(spaceId) {
+      this.currentSpaceId = spaceId;
+      this.membersDialogVisible = true;
     },
 
     addNew() {
@@ -215,7 +236,7 @@ export default {
   width: 20vw;
   height: 200px;
   display: block;
-  background-repeat: round;
+  background-repeat: no-repeat;
 }
 
 .clearfix:before,

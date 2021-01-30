@@ -12,8 +12,24 @@ const getters = {
 }
 
 const actions = {
-    getById: (op, {id}) => {
+    getById: (state, id) => {
         return httpClient.get(`/spaces/${id}`);
+    },
+
+    loadMembers: (state, spaceId) => {
+        return httpClient.get(`/spaces/${spaceId}/members`);
+    },
+
+    createMember( state, {spaceId, member}) {
+        return httpClient.post(`/spaces/${spaceId}/members`, member)
+    },
+
+    updateMember(state, {spaceId, member}) {
+        return httpClient.post(`/spaces/${spaceId}/members/${member.id}`, member)
+    },
+
+    deleteMember( state , {spaceId, memberId}) {
+        return httpClient.post(`/spaces/${spaceId}/members/${memberId}/delete`)
     },
 
     create({ commit }, space) {
@@ -24,7 +40,6 @@ const actions = {
 
     update({ commit }, space) {
         return httpClient.post(`/spaces/${space.id}`, space).then(() => {
-            debugger
             commit('updated', space)
         })
     },

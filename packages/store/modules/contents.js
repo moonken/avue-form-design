@@ -18,7 +18,7 @@ const getters = {
 
 // actions
 const actions = {
-    getById: (op, {spaceId, typeId, id}) => {
+    getById: (state, {spaceId, typeId, id}) => {
         return httpClient.get(`/spaces/${spaceId}/content-types/${typeId}/contents/${id}`);
     },
 
