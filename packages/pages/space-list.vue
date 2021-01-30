@@ -1,7 +1,6 @@
 <template>
   <el-row class="space-list">
-    <el-col :span="4" v-for="space in allSpaces" :key="space.id" :offset="1">
-      <el-card :body-style="{ padding: '0px' }">
+      <el-card class="space-card" v-for="space in allSpaces" :key="space.id" :body-style="{ padding: '0px' }">
         <div>
           <div @click="goto(space.id)" class="image" :style="{ backgroundImage: getBackgroundImage(space.backgroundImage)}"/>
           <div style="padding: 14px;">
@@ -25,16 +24,11 @@
           </div>
         </div>
       </el-card>
-    </el-col>
-    <el-col :span="4" :offset="1">
-      <el-card :body-style="{ padding: '0px' }">
-        <div @click="addNew()">
-          <el-row type="flex" class="add-container">
+      <el-card class="space-card" :body-style="{ padding: '0px' }">
+          <el-row @click="addNew()" type="flex" class="add-container">
             <el-col class="add-icon" :span="24"><i class="el-icon-circle-plus-outline"></i></el-col>
           </el-row>
-        </div>
       </el-card>
-    </el-col>
 
     <el-dialog
         title="提示"
@@ -185,12 +179,19 @@ export default {
   margin-top: 20px;
 }
 
+.space-card {
+  display: inline-block;
+  width: 20%;
+  height: 310px;
+  margin: 20px 2%;
+}
+
 .add-container {
+  margin-top: 90px;
   justify-content: center; /* 水平居中 */
   align-items: center; /* 垂直居中 */
   text-align: center;
-  width: 330px;
-  height: 308px;
+  display: flex;
 }
 .icon-button {
   margin: 0 10px;
@@ -211,7 +212,7 @@ export default {
 }
 
 .image {
-  width: 330px;
+  width: 20vw;
   height: 200px;
   display: block;
   background-repeat: round;

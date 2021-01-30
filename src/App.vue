@@ -1,15 +1,15 @@
 <template>
     <div class="main">
-      <div class="nav-bar" v-if="this.$route.name != 'login' && this.$route.name != 'spaces'">
+      <div class="nav-bar">
         <el-menu
             class="el-menu-demo"
             mode="horizontal"
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b">
-          <el-menu-item @click="$router.push({path: `/spaces`})" index="1">内容类型</el-menu-item>
-          <el-menu-item @click="handleSelect(null)" index="2">内容类型</el-menu-item>
-          <el-submenu index="3">
+          <el-menu-item @click="$router.push({path: `/spaces`})" index="1">空间</el-menu-item>
+          <el-menu-item v-if="spaceId" @click="handleSelect(null)" index="2">内容类型</el-menu-item>
+          <el-submenu v-if="spaceId" index="3">
             <template slot="title">内容</template>
             <el-menu-item v-for="type in allTypes" :key="type.id" index="type.id" @click="handleSelect(type)">{{ type.name }}</el-menu-item>
           </el-submenu>
@@ -28,6 +28,7 @@ export default {
   name: "app",
   data() {
     return {
+      spaceId: null,
     };
   },
   methods: {
@@ -51,6 +52,7 @@ export default {
     '$route.params.spaceId': {
       handler: function (spaceId) {
         if (spaceId) {
+          this.spaceId = spaceId;
           this.cleatTypes();
           this.loadTypes(spaceId);
         }
