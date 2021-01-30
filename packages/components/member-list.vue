@@ -84,7 +84,7 @@ export default {
               value: 'id',
             },
             filterable: false,
-            dicUrl: 'http://localhost:8085/api/cms/users',
+            dicUrl:  process.env.VUE_APP_API_URL + 'users',
             dicMethod: 'get',
           },
           {
