@@ -60,6 +60,7 @@ export default {
   components: {MemberList, UserAvatarList},
   data() {
     return {
+      allSpaces: [],
       newSpace: {},
       currentSpaceId: null,
       dialogVisible: false,
@@ -116,11 +117,14 @@ export default {
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
     ...mapGetters({
-      allSpaces: 'spaces/getAll'
+      getSpaces: 'spaces/getAll'
     })
   },
   beforeMount() {
-    this.loadSpaces()
+    let that = this;
+    this.loadSpaces().then(function (){
+      that.allSpaces = that.getSpaces;
+    });
   },
   methods: {
     ...mapActions({

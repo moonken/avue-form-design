@@ -41,7 +41,7 @@ export default {
   beforeMount() {
     let that = this;
     this.loadTypes(this.$route.params.spaceId).then(() => {
-      let structure = {...that.getType(this.$route.params.id)};
+      let structure = {...that.getType(this.$route.params.id).structure};
       if (!structure.column) {
         structure.column = [{
           type: 'input',
